@@ -1,0 +1,60 @@
+//------------------------------------------------
+// pNodeIdentifier config block
+
+ProcessConfig = pNodeIdentifier
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   // debug tools
+   app_logging = true
+   debug = true
+   debug_stream = stdout // or stderr or any
+   verbose = 1
+}
+
+
+
+//------------------------------------------
+//  Setup for minimal testing
+
+ServerHost   = localhost
+ServerPort   = 9000
+Community    = alpha
+MOOSTimeWarp = 1
+
+//------------------------------------------
+//  Example uTimerScript config block below
+//  For more info, type the command uTimerScript -w
+ ProcessConfig = uTimerScript                                    
+ {                                                               
+   rand_var    = varname=RND_VAL, min=0, max=50, key=at_post
+
+   event = var=REPORT, val="start", time=0
+   event = var=REPORT, val="accidents=0, unique_id=0", time=0, amt=100 
+   event = var=REPORT, val="end", time=0
+ }
+
+//------------------------------------------
+ // pLogger configuration block
+ ProcessConfig = pLogger
+ {
+  AppTick  = 20.0
+  CommsTick   = 20.0
+  AsyncLog    = true
+  WildCardLogging = true
+  FileTimeStamp   = true
+ }
+
+
+//------------------------------------------
+ // Antler configuration block
+ ProcessConfig = ANTLER
+ {
+    MSBetweenLaunches = 200
+    Run = MOOSDB @ NewConsole = false
+    Run = pNodeIdentifier @ NewConsole = false
+    Run = uTimerScript @ NewConsole = false
+    Run = pLogger @ NewConsole = false
+ }
+

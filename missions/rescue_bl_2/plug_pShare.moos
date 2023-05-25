@@ -1,0 +1,11 @@
+//---------------------------------------------------------
+// pShare config block
+
+ProcessConfig = pShare
+{
+  AppTick    = 5
+  CommsTick  = 5
+
+  input = route = localhost:$(PSHARE_PORT)
+}
+

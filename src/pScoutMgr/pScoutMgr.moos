@@ -1,0 +1,9 @@
+//------------------------------------------------
+// pScoutMgr config block
+
+ProcessConfig = pScoutMgr
+{
+   AppTick   = 4
+   CommsTick = 4
+}
+

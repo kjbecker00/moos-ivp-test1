@@ -1,0 +1,265 @@
+//--------    FILE: $(VNAME).bhv  -------------
+
+initialize   DEPLOY = false
+initialize   RETURN = false
+initialize   SURVEY = false
+initialize   AVOID  = true
+initialize   SURVEY = true
+initialize   STATION_KEEP = false
+initialize   ANTAGONIZE = true
+  
+set MODE = ACTIVE {
+  DEPLOY = true
+} INACTIVE
+
+set MODE = STATION-KEEPING {
+  MODE = ACTIVE
+  STATION_KEEP = true
+}                       
+
+set MODE = SURVEYING {
+  MODE = ACTIVE
+  RETURN != true
+  SURVEY = true
+} 
+
+set MODE = RETURNING {
+  MODE = ACTIVE
+  RETURN = true
+} 
+
+// #ifdef VROLE scout
+// //----------------------------------------------
+// Behavior = BHV_Scout
+// {
+//   name       = scout
+//   pwt        = 100
+//   updates    = SCOUT_UPDATE
+//   condition  = MODE==SURVEYING
+//   perpetual  = true
+//   endflag    = RETURN = true
+
+// 	tmate = $(TMATE)
+	
+//   capture_radius = 10 
+// }
+// #endif
+
+	
+//----------------------------------------------
+#ifdef VROLE rescue
+Behavior = BHV_Waypoint
+{
+  name       = waypt_survey
+  pwt        = 100
+  updates    = SURVEY_UPDATE
+  condition  = MODE==SURVEYING
+  perpetual  = true
+  endflag    = RETURN = true
+
+          repeat = 0
+           speed = 1.2
+  capture_radius = 1.0 
+    capture_line = true
+     slip_radius = 8.0
+          points = 41,-25:64,-41:28,-60:50,-92:5,-100
+
+	crs_spd_zaic_ratio = 85
+	
+     visual_hints = vertex_size  = 4             // default
+     visual_hints = vertex_color = dodger_blue   // default
+     visual_hints = edge_size = 1
+
+  visual_hints = edge_color = $(COLOR) 
+}
+
+//----------------------------------------------
+Behavior = BHV_StationKeep
+{
+  name         = station-keep
+  pwt          = 100
+  condition    = MODE==STATION-KEEPING
+
+  center_activate = true
+     inner_radius = 5
+     outer_radius = 10 
+      outer_speed = 1.0
+
+    transit_speed = 1.3
+       swing_time = 7
+     visual_hints = vertex_size=0, edge_color=gray50
+}
+#else
+
+#endif
+
+#ifdef VNAME cal
+Behavior = BHV_Trail
+ {
+   // General Behavior Parameters
+   // ---------------------------
+   name         = trail_                         // example
+   pwt          = 200                               // example
+   condition    = MODE==SURVEYING                      // example
+   condition    = ANTAGONIZE == true
+   updates      = ANTAGONIZE_UPDATE                      // example
+   templating   = spawn                             // example
+   perpetual = true
+
+   ignore_name = $(TMATE)
+
+  trail_angle = 150
+  trail_range = 10
+
+         extrapolate = true             // default
+    on_no_contact_ok = true             // default
+ }
+#endif
+
+
+// //----------------------------------------------
+// Behavior = BHV_FAST
+// {
+//   name         = full-spd-ahead
+//   pwt          = 100
+//   condition    = MODE==SURVEYING
+//   speed = 2.0
+// }
+
+//----------------------------------------------
+//Behavior = BHV_AvoidCollision
+{
+  name       = avdcol_
+  pwt        = 350
+  condition  = AVOID = true 
+  condition  = MODE==ACTIVE
+  condition  = MODE!=ACTIVE:STATION-KEEPING
+  updates    = CONTACT_INFO
+  endflag    = CONTACT_RESOLVED = $[CONTACT]
+  templating = spawn
+
+             contact = to-be-set
+    on_no_contact_ok = true
+         extrapolate = true
+               decay = 30,60
+
+         use_refinery = true
+
+        pwt_outer_dist = 35
+        pwt_inner_dist = 10
+        completed_dist = 40
+     min_util_cpa_dist = 10
+     max_util_cpa_dist = 18
+             pwt_grade = linear
+//   bearing_line_config = white:0, green:0.65, yellow:0.8, red:1.0
+}
+
+//----------------------------------------------
+Behavior = BHV_AvdColregsV22
+{
+  name       = avdcol_
+  pwt        = 350
+  condition  = AVOID = true 
+  condition  = MODE==ACTIVE
+  condition  = MODE!=ACTIVE:STATION-KEEPING
+  updates    = CONTACT_INFO
+  endflag    = CONTACT_RESOLVED = $[CONTACT]
+  templating = spawn
+
+            contact = to-be-set
+   on_no_contact_ok = true
+        extrapolate = true
+              decay = 30,60
+
+        headon_only = true
+
+//	velocity_filter = min_spd=0.2, max_spd=1.0, pct=40
+	
+       use_refinery = true
+
+     pwt_outer_dist = 35
+     pwt_inner_dist = 10
+     completed_dist = 40
+  min_util_cpa_dist = 10
+  max_util_cpa_dist = 18
+          pwt_grade = linear
+//   bearing_line_config = white:0, green:0.65, yellow:0.8, red:1.0
+}
+
+//----------------------------------------------
+Behavior = BHV_Waypoint
+{
+  name       = waypt_return
+  pwt        = 100
+  updates    = RETURN_UPDATE
+  condition  = MODE==RETURNING
+  perpetual  = true
+  endflag    = RETURN = false
+  endflag    = STATION_KEEP=true
+
+           speed = 1.0
+  capture_radius = 2.0
+     slip_radius = 8.0
+
+#ifdef VNAME abe
+	point = 52,9
+#elseifdef VNAME ben
+	point = 39,4
+#elseifdef VNAME cal
+	point = 29,0
+#elseifdef VNAME deb
+	point = 16,-6
+#elseifdef VNAME eve
+	point = 4,-11
+#elseifdef VNAME fin
+	point = 2,-15
+#elseifdef VNAME max
+	point = 26,-2
+#elseifdef VNAME ned
+	point = 12,-8
+#elseifdef VNAME oak
+	point = 14,-10
+#else
+	point = $(START_POS)
+#endif
+
+     visual_hints = vertex_size  = 4             // default
+     visual_hints = vertex_color = dodger_blue   // default
+}
+
+//----------------------------------------------
+Behavior = BHV_OpRegionRecover
+{
+  name         = recover
+  pwt          = 300
+  updates      = RECOVER_UPDATES
+  activeflag   = RECOVER = true
+  inactiveflag = RECOVER = false
+
+  //polygon = pts={-85,-48 : 59.37,20.97 : 93.86,-51.22 : -50.51, -120.19}
+  //polygon = pts={-82,-55: -45,-149 : 122,-71 : 83,24}
+             polygon = pts={-72.6,-48:-26.3,-145.9:127.2,-74.4:80.8,23.4}
+	trigger_entry_time = 1
+  trigger_exit_time  = 1
+}
+
+
+Behavior = BHV_ConstantSpeed
+{
+  // General Behavior Parameters
+  // ---------------------------
+  name         = const_spd_transit  // example
+  pwt          = 30                // default
+  condition = MODE==SURVEYING
+  updates      = CONST_SPD_UPDATES  // example
+  perpetual = true
+
+  // Parameters specific to this behavior
+  // ------------------------------------
+          basewidth = 0.5          // default
+            duration = 0            // default
+              speed = 2            // default
+  speed_mismatch_var = SPEED_DIFF   // example
+          peakwidth = 0.5            // default
+        summitdelta = 50            // default
+}

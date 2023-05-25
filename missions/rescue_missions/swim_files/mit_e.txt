@@ -1,0 +1,23 @@
+// gen_swimmers --swimmers=21 --mit_small
+poly = pts={-31,-37:-7,-92:95,-46:72,10}
+swimmer = name=p01, x=62.7, y=-19.4
+swimmer = name=p02, x=69.7, y=-8.3
+swimmer = name=p03, x=91.1, y=-44.9
+swimmer = name=p04, x=83.4, y=-21.1
+swimmer = name=p05, x=53.3, y=-16.5
+swimmer = name=p06, x=-2.8, y=-76.3
+swimmer = name=p07, x=21.9, y=-72.5
+swimmer = name=p08, x=69.2, y=-48.1
+swimmer = name=p09, x=18.1, y=-59.4
+swimmer = name=p10, x=4.02, y=-76.01
+swimmer = name=p11, x=0.6, y=-30.6
+swimmer = name=p12, x=68.3, y=-56
+swimmer = name=p13, x=33.5, y=-52.3
+swimmer = name=p14, x=25.6, y=-26
+swimmer = name=p15, x=53.6, y=-41.6
+swimmer = name=p16, x=69.4, y=-38.6
+swimmer = name=p17, x=19.3, y=-67.2
+swimmer = name=p18, x=78.3, y=-47.4
+swimmer = name=p19, x=-24.6, y=-37.1
+swimmer = name=p20, x=60.46, y=-49.94
+swimmer = name=p21, x=31.8, y=-11.8

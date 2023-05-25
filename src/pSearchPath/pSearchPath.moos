@@ -1,0 +1,65 @@
+//------------------------------------------------
+// pSearchPath config block
+
+ProcessConfig = pSearchPath
+{
+   AppTick   = 4
+   CommsTick = 4
+
+   // debug tools
+   app_logging = true
+   debug = false
+   debug_stream = stdout // or stderr or any
+   verbose = 0
+}
+
+
+
+//------------------------------------------
+//  Setup for minimal testing
+
+ServerHost   = localhost
+ServerPort   = 9000
+Community    = alpha
+MOOSTimeWarp = 1
+
+//------------------------------------------
+//  Example uTimerScript config block below
+//  For more info, type the command uTimerScript -w
+ ProcessConfig = uTimerScript                                    
+ { 
+   event = var=RESCUE_REGION, val="pts={-31,-37:-7,-92:95,-46:72,10},edge_color=gray90,vertex_color=dodger_blue,vertex_size=5", time=2
+ }
+
+//------------------------------------------
+ // pLogger configuration block
+ ProcessConfig = pLogger
+ {
+  AppTick  = 20.0
+  CommsTick   = 20.0
+
+  Log = RESCUE_REGION @ 0
+  Log = LAWNMOWER_PATTERN @ 0
+  Log = ANGLE @ 0
+  Log = DL @ 0
+  Log = WH @ 0
+  Log = WH2 @ 0
+  Log = WH3 @ 0
+
+//   WildCardLogging =  true
+  AsyncLog    = true
+  FileTimeStamp   = true
+ }
+
+
+//------------------------------------------
+ // Antler configuration block
+ ProcessConfig = ANTLER
+ {
+    MSBetweenLaunches = 200
+    Run = MOOSDB @ NewConsole = false
+    Run = pLogger @ NewConsole = false
+    Run = pSearchPath @ NewConsole = false
+    Run = uTimerScript @ NewConsole = false
+ }
+

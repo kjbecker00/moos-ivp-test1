@@ -1,0 +1,7 @@
+// gen_swimmers --swimmers=5 --objects=15 --mit
+poly = pts={-95,-53:-60,-145:110,-63:75,25}
+swimmer = type=person, name=p01, x=33.3, y=-10.9
+swimmer = type=person, name=p02, x=-35.2, y=-36.9
+swimmer = type=person, name=p03, x=22.5, y=-3.6
+swimmer = type=person, name=p04, x=37.4, y=-80.5
+swimmer = type=person, name=p05, x=-46.2, y=-49.4

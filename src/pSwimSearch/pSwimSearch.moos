@@ -1,0 +1,14 @@
+//------------------------------------------------
+// pSwimSearch config block
+
+ProcessConfig = pSwimSearch
+{
+   AppTick   = 4
+   CommsTick = 4
+   rescue_range_min = 3
+   rescue_rng_max = 5
+   rescue_rng_pd = 1
+   debug = true
+   debug_stream = any
+}
+
